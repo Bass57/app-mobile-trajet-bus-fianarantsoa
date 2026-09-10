@@ -1,0 +1,7 @@
+{
+  "name": "Bus Fianarantsoa",
+  "description": "Lignes de bus urbains et taxis-be de Fianarantsoa Madagascar : itinéraires, arrêts, tarifs et correspondances.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
+
