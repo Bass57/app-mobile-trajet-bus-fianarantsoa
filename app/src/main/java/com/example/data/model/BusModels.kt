@@ -29,7 +29,8 @@ data class BusLine(
     val landmarks: List<String>,
     val frequencyMinutes: String,
     val operatingHours: String,
-    val fareAriary: Int = 500,
+    val fareAriary: Int = 600,
+    val fareNote: String? = null,
     val description: String,
     val isPopularForStudents: Boolean = false
 )

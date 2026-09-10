@@ -41,14 +41,14 @@ Ce fichier singleton (`object FianarBusData`) détient la cartographie urbaine d
 
 | Fonction | Paramètres | Type de retour | Rôle & Explication détaillée |
 | :--- | :--- | :--- | :--- |
-| `getLines()` | Aucun | `List<BusLine>` | Retourne la liste complète et immuable des 10 lignes urbaines de Fianarantsoa (L1 à L10) avec leurs arrêts, terminus, fréquences et couleurs. |
+| `getLines()` | Aucun | `List<BusLine>` | Retourne la liste complète et immuable des 15 lignes de taxi-be authentiques de Fianarantsoa (Lignes 38, CB Collectif Barrière, 40, 30, 32, 33, 48, 21, 22, 23, 26, 28, 29, 34, 39) avec leurs arrêts, terminus, fréquences et couleurs. |
 | `getStops()` | Aucun | `List<BusStop>` | Retourne l'annuaire des 35+ arrêts physiques répertoriés avec leur zone géographique et description de repérage. |
 | `getNetworkNodes()` | Aucun | `List<NetworkNode>` | Fournit les coordonnées spatiales relatives (X, Y entre 0.0 et 1.0) de chaque station pour le dessin vectoriel sur le Canvas. |
 | `getStudentTips()` | Aucun | `List<StudentTip>` | Fournit la liste des conseils pratiques dédiés aux étudiants desservant le campus universitaire d'Andrainjato. |
 | `getVocabularyList()` | Aucun | `List<VocabularyItem>` | Fournit les fiches lexicales bilingues Malagasy/Français des expressions indispensables en Taxi-be. |
 | `findStopByName(name)` | `name: String` | `BusStop?` | Recherche insensible à la casse d'un arrêt dans le catalogue. Retourne l'objet `BusStop` correspondant ou `null`. |
 | `findLinesPassingByStop(stopName)` | `stopName: String` | `List<BusLine>` | Détermine et renvoie toutes les lignes de bus qui desservent l'arrêt spécifié. Essentiel pour identifier les correspondances possibles. |
-| `calculateItinerary(departure, arrival)` | `departure: String, arrival: String` | `List<ItineraryPlan>` | Moteur d'itinéraire en 2 phases. Phase 1 : recherche les lignes directes communes aux deux arrêts et calcule la durée (3 min/arrêt) et le tarif (500 Ar). Phase 2 : explore les carrefours hubs (Tsianolondroa, Ampasambazaha, Antarandolo, Beravina) pour proposer des trajets avec 1 correspondance (1000 Ar). |
+| `calculateItinerary(departure, arrival)` | `departure: String, arrival: String` | `List<ItineraryPlan>` | Moteur d'itinéraire en 2 phases. Phase 1 : recherche les lignes directes communes aux deux arrêts et calcule la durée (3 min/arrêt) et le tarif exact (600 Ar standard, ou 500 Ar sur Ligne 38 et Collectif Barrière CB). Phase 2 : explore les carrefours hubs (Tsianolondroa, Ampasambazaha, Antarandolo, Beravina) pour proposer des trajets avec 1 correspondance. |
 
 ---
 
@@ -141,7 +141,7 @@ Point d'entrée de l'application Android et hôte de l'arborescence Compose.
 | Composable | Fichier | Rôle & Explication détaillée |
 | :--- | :--- | :--- |
 | `BusLinesView` | `BusLineCard.kt` | Vue d'ensemble de l'annuaire des lignes. Comporte la barre de recherche textuelle, les filtres défilants horizontaux (`FilterChip`) et la liste verticale (`LazyColumn`) des cartes de lignes. |
-| `BusLineCard` | `BusLineCard.kt` | Composant de carte Material 3 représentant une ligne : badge coloré avec son numéro, terminus, fréquence de passage, tarif de 500 Ar, aperçu des arrêts majeurs et bouton favori interactif. |
+| `BusLineCard` | `BusLineCard.kt` | Composant de carte Material 3 représentant une ligne : badge coloré avec son numéro/code (ex: L38, L40, CB), terminus, fréquence de passage, badge tarifaire (600 Ar standard, ou 500 Ar dérogatoire étudiant pour L38 et CB), aperçu des arrêts majeurs et bouton favori interactif. |
 | `BusLineDetailModal` | `BusLineDetailModal.kt` | Feuille modale inférieure (`ModalBottomSheet`) affichant la fiche détaillée de la ligne, bouton de bascule Aller/Retour, timeline verticale des arrêts avec pastilles colorées, correspondances avec d'autres lignes, et boutons rapides 'Définir comme départ / arrivée'. |
 | `ItineraryFinderView` | `ItineraryFinderView.kt` | Écran de calcul de trajet. Intègre deux sélecteurs déroulants accessibles (`ExposedDropdownMenuBox`), bouton d'inversion des arrêts, suggestions de trajets fréquents (Campus, Marché, Hôpital) et liste des résultats calculés. |
 | `ItineraryCard` | `ItineraryFinderView.kt` | Carte de présentation d'une solution d'itinéraire, avec badge distinctif Direct vs Correspondance, calcul du temps total et décomposition détaillée des étapes. |
@@ -153,7 +153,7 @@ Point d'entrée de l'application Android et hôte de l'arborescence Compose.
 
 ## 3. MODÈLES DE DONNÉES & ENTITÉS
 
-- **`BusLine`** : Identifiant (`id`), libellé (`number`), terminus (`departure`, `terminus`), liste ordonnée des arrêts (`stops`), couleur d'identification (`color`), tarif (`fareAriary`), fréquence (`frequencyMinutes`), horaires (`operatingHours`).
+- **`BusLine`** : Identifiant (`id`), libellé (`number`), terminus (`departure`, `terminus`), liste ordonnée des arrêts (`stops`), couleur d'identification (`color`), tarif (`fareAriary` : 600 Ar standard, 500 Ar pour L38 et Collectif Barrière CB), note tarifaire (`fareNote`), fréquence (`frequencyMinutes`), horaires (`operatingHours`).
 - **`BusStop`** : Nom (`name`), zone urbaine (`zone`), repères visuels (`description`).
 - **`ItineraryPlan` & `ItineraryStep`** : Résultats de routage détaillant si le trajet est direct ou avec correspondance, le point de changement (`transferStop`), la durée totale estimée et le tarif cumulé.
 - **`FavoriteItem`** : Entité Room (`@Entity(tableName = "favorites")`) sauvegardant les lignes et arrêts favoris de l'usager avec timestamp.
@@ -165,13 +165,13 @@ Point d'entrée de l'application Android et hôte de l'arborescence Compose.
 
 L'algorithme implémenté dans `FianarBusData.calculateItinerary` fonctionne sans connexion internet :
 1. **Passage 1 (Recherche directe)** :
-   - Parcourt les 10 lignes du réseau.
+   - Parcourt les lignes du réseau.
    - Pour chaque ligne contenant à la fois le départ et l'arrivée, détermine l'indice de départ (`depIndex`) et l'indice d'arrivée (`arrIndex`).
-   - Calcule le nombre d'arrêts (`|arrIndex - depIndex|`), estime la durée (3 minutes par arrêt intermédiaire) et applique le tarif unique de 500 Ar.
+   - Calcule le nombre d'arrêts (`|arrIndex - depIndex|`), estime la durée (3 minutes par arrêt intermédiaire) et applique le tarif exact de la ligne empruntée.
 2. **Passage 2 (Recherche avec correspondance)** :
    - Si un trajet direct n'existe pas ou pour offrir des alternatives, l'algorithme consulte les carrefours pivots majeurs de Fianarantsoa : **Tsianolondroa**, **Ampasambazaha**, **Antarandolo**, **Beravina**.
    - Recherche les lignes menant du départ vers le pivot, puis les lignes menant du pivot vers l'arrivée.
-   - Assemble les deux segments en un plan à 1 correspondance avec temps de correspondance estimé (8 minutes de battement) et tarif cumulé de 1000 Ar.
+   - Assemble les deux segments en un plan à 1 correspondance avec temps de correspondance estimé (8 minutes de battement) et tarif cumulé des deux lignes.
 
 ---
 

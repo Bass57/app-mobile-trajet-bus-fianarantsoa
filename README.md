@@ -8,15 +8,31 @@ Développée avec **Kotlin** et **Jetpack Compose (Material Design 3)**, l'appli
 
 ## 📱 Aperçu des Fonctionnalités
 
-- **📋 Annuaire complet des 10 Lignes Urbaines (L1 à L10) :**
+- **📋 Annuaire complet des Lignes de Taxi-be réelles de Fianarantsoa :**
+  - Numéros de lignes authentiques :
+    - **Ligne 38** (Tsianolondroa ⇄ Andrainjato Université) — *Tarif étudiant 500 Ar*
+    - **Collectif Barrière (CB)** (Barrière d'Andrainjato ⇄ Campus Universitaire) — *Tarif étudiant 500 Ar*
+    - **Ligne 40** (Ankofafa ⇄ Andrainjato via Zoma) — *600 Ar*
+    - **Ligne 30** (Tsianolondroa ⇄ Ankofafa via Gare FCE) — *600 Ar*
+    - **Ligne 32** (Ambatovory ⇄ Soanierana via Tsianolondroa) — *600 Ar*
+    - **Ligne 33** (Tsianolondroa ⇄ Ankofafa via Antanimena) — *600 Ar*
+    - **Ligne 48** (Ambalambositra ⇄ Cité des Profs / Campus) — *600 Ar*
+    - **Ligne 21** (Mahazengy ⇄ CHU Tambohobe) — *600 Ar*
+    - **Ligne 22** (Haute-Ville Rova ⇄ Ampasambazaha) — *600 Ar*
+    - **Ligne 23** (Anjoma ⇄ Ankofafa) — *600 Ar*
+    - **Ligne 26** (Anjoma ⇄ Beravina via Tsianolondroa) — *600 Ar*
+    - **Ligne 28** (Beravina ⇄ Mahamanina) — *600 Ar*
+    - **Ligne 29** (Ambozontany ⇄ Ankofafa Andrefana) — *600 Ar*
+    - **Ligne 34** (Ankazobe ⇄ Sahalava via CHU) — *600 Ar*
+    - **Ligne 39** (Talatamaty ⇄ Tsianolondroa via Isaha) — *600 Ar*
   - Tracé ordonné de tous les arrêts desservis (Aller & Retour).
-  - Terminus, fréquence de passage (ex: 5-7 min), horaires d'exploitation (05h30 - 19h30) et tarif unitaire (500 Ar).
+  - Terminus, fréquence de passage (ex: 3-5 min), horaires d'exploitation (05h30 - 19h30) et structure tarifaire officielle (**600 Ar** tarif standard pour toutes les lignes urbaines, **500 Ar** exception étudiante dérogatoire pour la Ligne 38 et le Collectif Barrière CB).
   - Filtres thématiques par centres d'intérêt : *Université / Campus*, *Marchés*, *Hôpitaux / Santé*, *Gare FCE*.
-  - Recherche instantanée par nom de ligne, terminus ou nom d'arrêt.
+  - Recherche instantanée par numéro de ligne, terminus ou nom d'arrêt.
 
 - **🧭 Calculateur d'Itinéraire Intelligent :**
-  - **Trajets Directs :** identification des lignes sans correspondance, calcul du nombre d'arrêts, temps de parcours estimé (3 min/arrêt) et tarif fixe (500 Ar).
-  - **Trajets avec Correspondance :** exploration des carrefours d'échange stratégiques (**Tsianolondroa**, **Ampasambazaha**, **Antarandolo**, **Beravina**) pour assembler un trajet en deux étapes avec estimation du temps de correspondance (8 min) et tarif cumulé (1000 Ar).
+  - **Trajets Directs :** identification des lignes sans correspondance, calcul du nombre d'arrêts, temps de parcours estimé (3 min/arrêt) et tarif exact de la ligne.
+  - **Trajets avec Correspondance :** exploration des carrefours d'échange stratégiques (**Tsianolondroa**, **Ampasambazaha**, **Antarandolo**, **Beravina**) pour assembler un trajet en deux étapes avec estimation du temps de correspondance (8 min) et tarif cumulé.
   - Bouton d'inversion rapide Départ ⇄ Arrivée et raccourcis vers les trajets fréquents.
 
 - **🗺️ Plan Schématique Interactif du Réseau :**

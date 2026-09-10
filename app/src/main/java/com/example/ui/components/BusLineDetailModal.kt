@@ -102,7 +102,7 @@ fun BusLineDetailModal(
                             text = line.id,
                             color = Color.White,
                             fontWeight = FontWeight.Black,
-                            fontSize = 18.sp
+                            fontSize = if (line.id.length <= 2) 20.sp else 18.sp
                         )
                     }
 
@@ -163,7 +163,7 @@ fun BusLineDetailModal(
                 ) {
                     Column {
                         Text(
-                            text = "Tarif unique",
+                            text = if (line.fareAriary < 600) "Tarif dérogatoire" else "Tarif standard",
                             style = MaterialTheme.typography.labelSmall,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
@@ -171,8 +171,16 @@ fun BusLineDetailModal(
                             text = "${line.fareAriary} Ariary",
                             style = MaterialTheme.typography.bodyMedium,
                             fontWeight = FontWeight.Bold,
-                            color = Color(0xFF2E7D32)
+                            color = if (line.fareAriary == 500) Color(0xFFC62828) else Color(0xFF2E7D32)
                         )
+                        line.fareNote?.let { note ->
+                            Text(
+                                text = note,
+                                style = MaterialTheme.typography.labelSmall,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                fontSize = 10.sp
+                            )
+                        }
                     }
 
                     Column {

@@ -353,7 +353,7 @@ fun HeaderHeroBanner() {
                     color = Color.White
                 )
                 Text(
-                    text = "10 lignes urbaines • 500 Ariary • Réseau 100% hors-ligne",
+                    text = "Lignes urbaines & Collectifs • Tarif 600 Ar (L38 à 500 Ar) • Hors-ligne",
                     style = MaterialTheme.typography.bodySmall,
                     color = Color(0xFFB2DFDB)
                 )

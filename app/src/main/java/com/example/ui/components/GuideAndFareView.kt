@@ -24,6 +24,7 @@ import androidx.compose.material.icons.filled.School
 import androidx.compose.material.icons.filled.Translate
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.FilterChip
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -31,7 +32,10 @@ import androidx.compose.material3.Slider
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -51,8 +55,8 @@ fun GuideAndFareView(
     modifier: Modifier = Modifier
 ) {
     val vocabulary = remember { FianarBusData.VOCABULARY }
-    val standardFare = 500
-    val dailyBudget = tripsPerDay * standardFare
+    var selectedFareRate by remember { mutableIntStateOf(600) } // 600 Ar standard, 500 Ar exception (L38, CB)
+    val dailyBudget = tripsPerDay * selectedFareRate
     val monthlyBudget = dailyBudget * daysPerMonth
 
     LazyColumn(
@@ -63,7 +67,147 @@ fun GuideAndFareView(
     ) {
         item {
             Spacer(modifier = Modifier.height(4.dp))
-            // Interactive Fare Budget Calculator Card
+            // Card: Grille Tarifaire Officielle & Exceptions
+            Card(
+                shape = RoundedCornerShape(20.dp),
+                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+                elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .testTag("official_fares_card")
+            ) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(18.dp)
+                ) {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Icon(
+                                imageVector = Icons.Default.Info,
+                                contentDescription = null,
+                                tint = Color(0xFF2E7D32),
+                                modifier = Modifier.size(26.dp)
+                            )
+                            Spacer(modifier = Modifier.width(10.dp))
+                            Text(
+                                text = "Tarifs Officiels Taxi-be",
+                                style = MaterialTheme.typography.titleMedium,
+                                fontWeight = FontWeight.Bold
+                            )
+                        }
+
+                        Surface(
+                            shape = RoundedCornerShape(8.dp),
+                            color = Color(0xFFE8F5E9)
+                        ) {
+                            Text(
+                                text = "Réglementé",
+                                style = MaterialTheme.typography.labelSmall,
+                                fontWeight = FontWeight.Bold,
+                                color = Color(0xFF2E7D32),
+                                modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
+                            )
+                        }
+                    }
+
+                    Spacer(modifier = Modifier.height(12.dp))
+
+                    // Detail 1 : Tarif Standard 600 Ar
+                    Surface(
+                        shape = RoundedCornerShape(12.dp),
+                        color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f),
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(12.dp),
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Column(modifier = Modifier.weight(1f)) {
+                                Text(
+                                    text = "Tarif Standard Urbain",
+                                    style = MaterialTheme.typography.bodyMedium,
+                                    fontWeight = FontWeight.Bold
+                                )
+                                Text(
+                                    text = "Toutes lignes régulières (L40, L30, L48, L21, L22, L26, L28, L34, L39)",
+                                    style = MaterialTheme.typography.bodySmall,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                                )
+                            }
+                            Text(
+                                text = "600 Ar",
+                                style = MaterialTheme.typography.titleMedium,
+                                fontWeight = FontWeight.Black,
+                                color = MaterialTheme.colorScheme.primary
+                            )
+                        }
+                    }
+
+                    Spacer(modifier = Modifier.height(8.dp))
+
+                    // Detail 2 : Exception Ligne 38 (500 Ar)
+                    Surface(
+                        shape = RoundedCornerShape(12.dp),
+                        color = Color(0xFFFFEBEE),
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(12.dp),
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Column(modifier = Modifier.weight(1f)) {
+                                Row(verticalAlignment = Alignment.CenterVertically) {
+                                    Text(
+                                        text = "Exception : Ligne 38 & Collectif CB",
+                                        style = MaterialTheme.typography.bodyMedium,
+                                        fontWeight = FontWeight.Bold,
+                                        color = Color(0xFFC62828)
+                                    )
+                                    Spacer(modifier = Modifier.width(6.dp))
+                                    Surface(
+                                        shape = RoundedCornerShape(4.dp),
+                                        color = Color(0xFFFFCDD2)
+                                    ) {
+                                        Text(
+                                            text = "Étudiant",
+                                            style = MaterialTheme.typography.labelSmall,
+                                            color = Color(0xFFB71C1C),
+                                            fontWeight = FontWeight.Bold,
+                                            modifier = Modifier.padding(horizontal = 4.dp, vertical = 1.dp)
+                                        )
+                                    }
+                                }
+                                Text(
+                                    text = "Ligne 38 (Tsianolondroa ⇄ Campus) et Collectif CB (Barrière ⇄ Facultés)",
+                                    style = MaterialTheme.typography.bodySmall,
+                                    color = Color(0xFF5D4037)
+                                )
+                            }
+                            Text(
+                                text = "500 Ar",
+                                style = MaterialTheme.typography.titleMedium,
+                                fontWeight = FontWeight.Black,
+                                color = Color(0xFFC62828)
+                            )
+                        }
+                    }
+                }
+            }
+        }
+
+        item {
+            // Interactive Fare Budget Calculator Card with Rate Switcher
             Card(
                 shape = RoundedCornerShape(20.dp),
                 colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
@@ -102,13 +246,40 @@ fun GuideAndFareView(
                             color = Color(0xFFE8F5E9)
                         ) {
                             Text(
-                                text = "Tarif fixe : 500 Ar",
+                                text = "$selectedFareRate Ar / trajet",
                                 style = MaterialTheme.typography.labelSmall,
                                 fontWeight = FontWeight.Bold,
                                 color = Color(0xFF2E7D32),
                                 modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
                             )
                         }
+                    }
+
+                    Spacer(modifier = Modifier.height(12.dp))
+
+                    // Rate Selector Filter Chips
+                    Text(
+                        text = "Sélectionner la ligne ou le tarif :",
+                        style = MaterialTheme.typography.labelMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                    Spacer(modifier = Modifier.height(6.dp))
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        FilterChip(
+                            selected = selectedFareRate == 600,
+                            onClick = { selectedFareRate = 600 },
+                            label = { Text("Standard (600 Ar)") },
+                            modifier = Modifier.weight(1f)
+                        )
+                        FilterChip(
+                            selected = selectedFareRate == 500,
+                            onClick = { selectedFareRate = 500 },
+                            label = { Text("Étudiant L38 / CB (500 Ar)") },
+                            modifier = Modifier.weight(1.2f)
+                        )
                     }
 
                     Spacer(modifier = Modifier.height(14.dp))
@@ -232,16 +403,17 @@ fun GuideAndFareView(
                         )
                         Spacer(modifier = Modifier.width(10.dp))
                         Text(
-                            text = "Conseils Étudiants (Campus Andrainjato)",
+                            text = "Conseils Étudiants & Accès Campus Andrainjato",
                             style = MaterialTheme.typography.titleSmall,
                             fontWeight = FontWeight.Bold
                         )
                     }
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(
-                        text = "• Lignes directes vers l'Université : Ligne 1 (départ Ankazobe/Tsianolondroa), Ligne 5 (via CHU Tambohobe), et Ligne 8 (départ Mahamanina).\n" +
-                            "• Heures de pointe matinales : 06h45 à 07h45. Prévoyez 15 minutes d'avance pour trouver une place assise.\n" +
-                            "• Arrêt stratégique de correspondance : Tsianolondroa ou Antarandolo.",
+                        text = "• Lignes directes vers l'Université : Ligne 38 (départ Tsianolondroa, tarif étudiant 500 Ar), Ligne 40 (départ Ankofafa/Zoma, 600 Ar), Ligne 48 (départ Ambalambositra/Ambalapaiso, 600 Ar).\n" +
+                            "• Navette Collectif Barrière (CB) : Des bus collectifs attendent près de la barrière/barrage d'Andrainjato pour vous monter directement aux facultés pour 500 Ar.\n" +
+                            "• Heures de pointe matinales : 06h45 à 07h45. Prévoyez 15 minutes d'avance pour trouver une place assise dans le taxi-be.\n" +
+                            "• Arrêts stratégiques de correspondance : Le grand carrefour de Tsianolondroa ou Antarandolo.",
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                         lineHeight = 20.sp
@@ -356,7 +528,7 @@ fun GuideAndFareView(
                     }
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(
-                        text = "1. Monnaie : Préparez toujours de petites coupures (500 Ar ou 1000 Ar). Évitez les gros billets (10 000 ou 20 000 Ar) au premier arrêt.\n" +
+                        text = "1. Monnaie : Préparez toujours de petites coupures et pièces (600 Ar tarif standard, 500 Ar ligne 38, ou 1000 Ar). Évitez les gros billets (10 000 ou 20 000 Ar) au premier arrêt.\n" +
                             "2. Signal d'arrêt : Le cri traditionnel est \"Misy miala e !\" adressé au receveur bien avant l'arrêt.\n" +
                             "3. Jour de grand marché (Zoma) : Le vendredi, la circulation autour de Tsianolondroa est plus dense, comptez +10 minutes sur votre trajet.",
                         style = MaterialTheme.typography.bodySmall,

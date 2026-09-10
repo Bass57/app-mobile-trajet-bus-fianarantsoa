@@ -77,7 +77,7 @@ fun BusLineCard(
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier.weight(1f)
                 ) {
-                    // Line number badge with authentic line color
+                    // Line number badge with authentic line color (e.g., L38, L40, CB)
                     Box(
                         modifier = Modifier
                             .size(44.dp)
@@ -89,7 +89,7 @@ fun BusLineCard(
                             text = line.id,
                             color = Color.White,
                             fontWeight = FontWeight.Black,
-                            fontSize = 17.sp
+                            fontSize = if (line.id.length <= 2) 18.sp else 16.sp
                         )
                     }
 
@@ -202,16 +202,24 @@ fun BusLineCard(
                         )
                     }
 
-                    // Fare badge
+                    // Fare badge with special distinction for student exceptions (L38 and CB at 500 Ar)
+                    val fareBgColor = when {
+                        line.fareAriary == 500 -> Color(0xFFFFEBEE)
+                        else -> Color(0xFFE8F5E9)
+                    }
+                    val fareTextColor = when {
+                        line.fareAriary == 500 -> Color(0xFFC62828)
+                        else -> Color(0xFF2E7D32)
+                    }
                     Surface(
                         shape = RoundedCornerShape(6.dp),
-                        color = Color(0xFFE8F5E9)
+                        color = fareBgColor
                     ) {
                         Text(
                             text = "${line.fareAriary} Ar",
                             fontWeight = FontWeight.Bold,
                             fontSize = 11.sp,
-                            color = Color(0xFF2E7D32),
+                            color = fareTextColor,
                             modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp)
                         )
                     }

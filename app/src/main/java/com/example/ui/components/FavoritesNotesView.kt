@@ -388,7 +388,7 @@ fun FavoritesNotesView(
                     OutlinedTextField(
                         value = noteStopOrLine,
                         onValueChange = onUpdateNoteStopOrLine,
-                        label = { Text("Ligne ou Arrêt (ex: Ligne 1 - Andrainjato)") },
+                        label = { Text("Ligne ou Arrêt (ex: Ligne 38 - Andrainjato)") },
                         modifier = Modifier
                             .fillMaxWidth()
                             .testTag("note_line_or_stop_input"),
